@@ -31,6 +31,8 @@ const serviceURL = new ServiceURL(
 
 module.exports = (context, eventGridEvent, inputBlob) => {  
 
+  context.log("Starting: " + inputBlob);
+  context.log("Starting context: " + context);
   const aborter = Aborter.timeout(30 * ONE_MINUTE);
   const widthInPixels = 100;
   const contentType = context.bindingData.data.contentType;
