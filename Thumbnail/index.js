@@ -29,7 +29,7 @@ const serviceURL = new ServiceURL(
   pipeline
 );
 
-module.exports = (context, eventGridEvent, inputBlob) => {  
+module.exports = async function(context, eventGridEvent, inputBlob) {  
 
   context.log("Starting: " + inputBlob);
   context.log("Starting context: " + context);
@@ -59,7 +59,7 @@ module.exports = (context, eventGridEvent, inputBlob) => {
 
   } finally {
 
-    context.done();
+    //context.done();
 
   }
 };
