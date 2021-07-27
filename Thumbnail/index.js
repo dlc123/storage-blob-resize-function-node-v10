@@ -46,8 +46,11 @@ module.exports = async function(context, eventGridEvent, inputBlob) {
   //const readStream = stream.PassThrough();
   //readStream.end(thumbnailBuffer);
 
+  const my_date = new Date();
+  const my_path = my_date.getUTCFullYear() + "/" + my_date.getUTCMonth()+1 + "/" + my_date.getUTCDate() + "/"
+  
   const containerURL = ContainerURL.fromServiceURL(serviceURL, containerName);
-  const blockBlobURL = BlockBlobURL.fromContainerURL(containerURL, "dwl/" + blobName);
+  const blockBlobURL = BlockBlobURL.fromContainerURL(containerURL, my_path + blobName);
   try {
     context.log("Out url: " + blockBlobURL.url);
     blockBlobURL.upload(aborter, inputBlob, inputBlob.length);
