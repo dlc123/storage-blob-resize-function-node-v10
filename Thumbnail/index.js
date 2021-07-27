@@ -31,27 +31,29 @@ const serviceURL = new ServiceURL(
 
 module.exports = async function(context, eventGridEvent, inputBlob) {  
 
-  context.log("Starting: " + inputBlob);
-  context.log("Starting context: " + context);
+  //context.log("Starting: " + inputBlob);
+  context.log("Starting context: " + context.bindingData.data);
+  context.log("Context url: " + context.bindingData.data.url);
   const aborter = Aborter.timeout(30 * ONE_MINUTE);
-  const widthInPixels = 100;
+  //const widthInPixels = 100;
   const contentType = context.bindingData.data.contentType;
   const blobUrl = context.bindingData.data.url;
   const blobName = blobUrl.slice(blobUrl.lastIndexOf("/")+1);
 
-  const image = await Jimp.read(inputBlob);
-  const thumbnail = image.resize(widthInPixels, Jimp.AUTO);
-  const thumbnailBuffer = await thumbnail.getBufferAsync(Jimp.AUTO);
-  const readStream = stream.PassThrough();
-  readStream.end(thumbnailBuffer);
+  //const image = await Jimp.read(inputBlob);
+  //const thumbnail = image.resize(widthInPixels, Jimp.AUTO);
+  //const thumbnailBuffer = await thumbnail.getBufferAsync(Jimp.AUTO);
+  //const readStream = stream.PassThrough();
+  //readStream.end(thumbnailBuffer);
 
   const containerURL = ContainerURL.fromServiceURL(serviceURL, containerName);
   const blockBlobURL = BlockBlobURL.fromContainerURL(containerURL, blobName);
   try {
 
-    await uploadStreamToBlockBlob(aborter, readStream,
-      blockBlobURL, uploadOptions.bufferSize, uploadOptions.maxBuffers,
-      { blobHTTPHeaders: { blobContentType: "image/*" } });
+    blockBlobURL.upload(aborter, inputBlob, inputBlob.length);
+//    await uploadStreamToBlockBlob(aborter, readStream,
+//      blockBlobURL, uploadOptions.bufferSize, uploadOptions.maxBuffers,
+//      { blobHTTPHeaders: { blobContentType: "image/*" } });
 
   } catch (err) {
 
