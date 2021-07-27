@@ -49,7 +49,7 @@ module.exports = async function(context, eventGridEvent, inputBlob) {
   const containerURL = ContainerURL.fromServiceURL(serviceURL, containerName);
   const blockBlobURL = BlockBlobURL.fromContainerURL(containerURL, blobName);
   try {
-
+    context.log("Out url: " + blockBlobURL.url);
     blockBlobURL.upload(aborter, inputBlob, inputBlob.length);
 //    await uploadStreamToBlockBlob(aborter, readStream,
 //      blockBlobURL, uploadOptions.bufferSize, uploadOptions.maxBuffers,
